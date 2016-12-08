@@ -1,5 +1,5 @@
 # Pump-Control-Program
-Program for controlling New Era syringe pumps with Pronterface for use with our silicone 3D printer.
+Program for controlling New Era syringe pumps with Pronterface for use with our silicone 3D printer. Used by mLab at Oregon State University.
 
 ### new_era.py
 Provides initial functions to be used later in pump_control.py. These include:
