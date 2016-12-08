@@ -46,15 +46,17 @@ Links pump number to a particular syringe pump; prints that number on interface
 Make sure to read all instructions before trying to run it yourself.
 
 *On Linux*
+
 1. Run printTester.py and pumpTester.py in their own terminal windows.
-  - note the serial ports denoted.
-  - if using actual printer and syringe pumps, ensure the correct lines are uncommented
+  * note the serial ports denoted.
+  * if using actual printer and syringe pumps, ensure the correct lines are uncommented
 2. Prepare middleMan.py
-  - if using printTester.py and pumpTester.py, enter their serial ports into the indicated serial object in middleMan.py (look for the comments).
+  * if using printTester.py and pumpTester.py, enter their serial ports into the indicated serial object in middleMan.py (look for the comments).
 3. Run middleMan.py
-  - note the serial port denoted. 
-  - enter the serial port into pronterface or tester.py (if debugging).
-4. *for debugging* - run tester.py in its own terminal window.
-  - enter your own commands and hit enter, and the program will send that command out.
-4. *for printing* - having entered in the serial port into pronterface, connect to the printer.
+  * note the serial port denoted. 
+  * enter the serial port into pronterface or tester.py (if debugging).
+4. Connect control program
+  * *for debugging* - run tester.py in its own terminal window. Enter your own commands and hit enter, and the program will send that command out.
+  * *for printing* - having entered in the serial port into pronterface, connect to the printer.
+
 *Usage Note:* if multiple syringe pump connected, currently several useless syringe pump commands must be sent to ensure all syringe pumps successfully connect.
