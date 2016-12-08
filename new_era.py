@@ -3,35 +3,46 @@ import serial
 
 def find_pumps(ser,tot_range=10):
     pumps = []
+    print pumps
     for i in range(tot_range):
         ser.write('%iADR\x0D'%i)
         output = ser.readline()
+        print "writing to address: " + str(i)
+        #output = ser.readline()
         if len(output)>0:
             pumps.append(i)
+            print pumps
     return pumps
 
 def run_all(ser):
     cmd = '*RUN\x0D'
     ser.write(cmd)
-    output = ser.readline()
-    if '?' in output: print cmd.strip()+' from run_all not understood'
+    #output = ser.readline()
+    #if '?' in output: print cmd.strip()+' from run_all not understood'
 
 def stop_all(ser):
     cmd = '*STP\x0D'
     ser.write(cmd)
-    output = ser.readline()
-    if '?' in output: print cmd.strip()+' from stop_all not understood'
+    #output = ser.readline()
+    #if '?' in output: print cmd.strip()+' from stop_all not understood'
+
+#custom function
+def run_pump(ser,pump):
+    cmd = '%iRUN\x0D'%pump
+    ser.write(cmd)
+    #output = ser.readline()
+    #if '?' in output: print cmd.strip()+' from run_pump not understood'
 
 def stop_pump(ser,pump):
     cmd = '%iSTP\x0D'%pump
     ser.write(cmd)
-    output = ser.readline()
-    if '?' in output: print cmd.strip()+' from stop_pump not understood'
+    #output = ser.readline()
+    #if '?' in output: print cmd.strip()+' from stop_pump not understood'
 
-    cmd = '%iRAT0UH\x0D'%pump
-    ser.write(cmd)
-    output = ser.readline()
-    if '?' in output: print cmd.strip()+' from stop_pump not understood'
+    #cmd = '%iRAT0UH\x0D'%pump
+    #ser.write(cmd)
+    #output = ser.readline()
+    #if '?' in output: print cmd.strip()+' from stop_pump not understood'
 
 def set_rates(ser,rate):
     cmd = ''
@@ -41,8 +52,8 @@ def set_rates(ser,rate):
         if flowrate<0: direction = 'WDR'
         frcmd = '%iDIR%s\x0D'%(pump,direction)
         ser.write(frcmd)
-        output = ser.readline()
-        if '?' in output: print frcmd.strip()+' from set_rate not understood'
+        #output = ser.readline()
+        #if '?' in output: print frcmd.strip()+' from set_rate not understood'
         fr = abs(flowrate)
                 
         if fr<5000:
@@ -52,8 +63,8 @@ def set_rates(ser,rate):
             cmd += str(pump)+'RAT'+str(fr)[:5]+'MH*'
     cmd += '\x0D'
     ser.write(cmd)
-    output = ser.readline()
-    if '?' in output: print cmd.strip()+' from set_rates not understood'
+    #output = ser.readline()
+    #if '?' in output: print cmd.strip()+' from set_rates not understood'
 
 def get_rate(ser,pump):
     #get direction
@@ -83,7 +94,6 @@ def set_diameter(ser,pump,dia):
     ser.write(cmd)
     output = ser.readline()
     if '?' in output: print cmd.strip()+' from set_diameter not understood'
-
     
 def get_diameter(ser,pump):
     cmd = '%iDIA\x0D'%pump
@@ -112,13 +122,19 @@ def prime(ser,pump):
     output = ser.readline()
     if '?' in output: print cmd.strip()+' from prime not understood'
 
+        
+if __name__ == '__main__':
+    ser = serial.Serial('/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller_D-if00-port0', 19200)
+    #ser = serial.Serial('/dev/serial/by-path/pci-0000:00:14.0-usb-0:3:1.0-port0', 19200)
+    #ser = serial.Serial('/dev/ttyUSB0', 19200)
 
-
-
-
-#ser = serial.Serial('COM3',19200)
-#print ser.name       # check which port was really used
-#print ser.isOpen()
-#ser.close()
-#pumps = find_pumps(ser)
-#rates = get_rates(ser,pumps)
+    #print p.name       # check which port was really used
+    #print p.isOpen()
+    #p.close()
+    pumps = find_pumps(ser)
+    print "Found pumps are: "
+    print pumps
+    rates = get_rates(ser,pumps)
+    print "Found rates are: "
+    print rates
+    ser.close()
