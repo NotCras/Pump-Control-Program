@@ -45,15 +45,15 @@ Might be utilized later.
 # Program Usage
 Make sure to read all instructions before trying to run it yourself. Setup will continue to be made as simple as possible.
 
-### Setting up the Code
+## Setting up the Code
 
 Perform the steps in the given order and you should be all set. I will try to make the instructions simple.
 
-*Getting the Smoothieboard Ready*
+### Getting the Smoothieboard Ready
 
-Follow the directions given on the [smoothieboard website](). Provided in the config folder is the configuration file we used as a reference.
+Follow the directions to set up the board given on the [smoothieboard website](http://smoothieware.org/3d-printer-guide). Provided in the config folder is the configuration file we used as a reference.
 
-*Getting the Raspberry Pi Ready*
+### Getting the Raspberry Pi Ready
 
 For the pi ethernet, we need to set a static IP address on this and on the computer its running on.
 
@@ -72,7 +72,7 @@ For the pi ethernet, we need to set a static IP address on this and on the compu
 
 raspberrypi.stackechange.com how do I set up raspberry pi 3 networking
 
-*Getting the host computer ready*
+### Getting the host computer ready
 
 First, install [Pronterface](https://github.com/kliment/Printrun) and connect the raspberry pi by ethernet to your computer. 
 
@@ -83,8 +83,10 @@ For static IP setting, I current have good instructions for Linux. On the host c
 To set up Pronterface:
   - enter the static IP of the Raspberry Pi (with correct port) into the [Port] option in the upper left 
     - If you followed the default IP mentioned above, that should be 10.0.0.100:5005
+  - for convenience sake, I would suggest adding custom buttons to the Pronterface UI
+    - you can do this at the bottom of the plater window in the center
 
-*Added linux help*
+### Added linux help
 To connect to the pi from the file manager, use the following command in terminal:
   - sftp://pi@10.0.0.100/
 
@@ -92,8 +94,7 @@ You can also connect to the pi from ssh, so you don't need to connect a monitor 
   - ssh [username]@[IP OF THE PI GOES HERE]
     - default username is pi
     - then enter password, and you should be in!
+      - you can navigate the raspberry pi from terminal as if you are on the pi itself
 
 *Usage Note:* if multiple syringe pump are connected, currently several useless syringe pump commands must be sent to ensure all syringe pumps successfully connect. This is done in the beginning when all system connections are checked.
-
-
 
