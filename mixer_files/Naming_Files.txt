@@ -1,0 +1,16 @@
+This file will hepl you to rename files.
+
+##########################################
+Rules:
+
+*Replace each space with "_"
+*Capitalize each first letter of the words
+ 
+##########################################
+
+For example if your want to name a part as "great part"
+name it like "Great_Part"
+
+:)
+
+Osman Dogan Yirmibesoglu

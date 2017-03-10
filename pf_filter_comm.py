@@ -38,6 +38,8 @@ s.listen(1)
 pronter, addr = s.accept()
 print 'Connected!'
 
+allSystemsGo = 0
+
 while(1):
         #need to store the commands into a queue so we don't lose commands
         
@@ -47,9 +49,10 @@ while(1):
         #next, check that the syringe connection is good
         if pump.isOpen():
 
-            new_era.run_all(pump)
-            new_era.stop_all(pump) #this is to wake up the pump
-            
+            if allSystemsGo is 0: #run once
+                new_era.run_all(pump)
+                new_era.stop_all(pump) #this is to wake up the pumps
+                
             #set the all go variable!
             allSystemsGo = 1
 
@@ -66,7 +69,7 @@ while(1):
         #read in the command from pronterface
         val = pronter.recv(BUFFER_SIZE)
 
-        
+        print val  #it seems that the messages come out length + 1 because of pronterface
 
         #then time to filter!
         #what to do with our pump commands
@@ -75,20 +78,23 @@ while(1):
             if pumpCommands[val[0]+val[1]] is 'RUN':
 
                 #further figure out what kind of 
-                if len(val) > 2: #val[2] is "-": #command will be P1_adr
+                if len(val) > 3: #val[2] is "_": #command will be P1_adr
+                    print val[3]
                     adr = int(val[3:])
                     new_era.run_pump(pump, adr)
     
         	else:
+                    #print 'run all pumps!'
                     new_era.run_all(pump)
 
 	    #check if we will selectively choose a pump to stop
 	    elif pumpCommands[val[0]+val[1]] is 'STP':
-		if len(val) > 2: #val[2] is "-": #command will be P2_adr
+		if len(val) > 3: #val[2] is "-": #command will be P2_adr
 		    adr = int(val[3:])
 		    new_era.stop_pump(pump, adr)
 
 		else:
+                    #print 'stop all pumps!'
 		    new_era.stop_all(pump)
 
 #	    #then we will check the second letter to determine what the command actually is
@@ -96,10 +102,18 @@ while(1):
 		#brute forcing the logic to get adr (1 or 2 values)
                 
 		if val[4] is '_': #one address digit
+                    #print 'one digit adr rate set!'
+                    #print val[3]
+                    #print val[4]
+                    #print val[5:]
 		    adr = int(val[3])
 		    rat = float(val[5:])
+
+		    rate2set = {adr:rat}
+		    new_era.set_rates(pump,rate2set)
 		    
 		else: #two address digits
+                    #print 'two digit adr rate set!'
 		    adr = int(val[3]+val[4])
 		    rat = float(val[6:])
 
@@ -107,9 +121,10 @@ while(1):
 		    new_era.set_rates(pump,rate2set)
     
 	    else:
-                pump.write(pumpCommands[val[1]])
+                #print 'infuse/withdraw set!'
+                pump.write(pumpCommands[val[0]+val[1]])
 
-        #if its not fancy like a pump command, then we need to send it to the printer
+        #if its not an S command, then we need to send it to the printer
         else:
             r3dp.write(val)
 
@@ -120,7 +135,9 @@ while(1):
     #check if theres anything else to communicate
     #back to pronterface from the printer
     check = r3dp.inWaiting()
+    #print 'in waiting -' + str(check)
     if check:
         printer = r3dp.read(check)
-        pronter.send(printer)    
+        pronter.send(printer)
+        #print 'sent to pronterface - ' + str(printer)
 
