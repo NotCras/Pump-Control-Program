@@ -1,7 +1,5 @@
 #Controlling multiple systems from Pronterface
 
-
-
 ## Pump-Control-Program
 Program for controlling New Era syringe pumps with Pronterface for use with our silicone 3D printer. Used by mLab at Oregon State University. This program utilizes a raspberry pi as a middleman between pronterface, the syringe pump, and the smoothieboard.
 
